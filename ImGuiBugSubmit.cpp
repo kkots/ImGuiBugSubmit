@@ -191,24 +191,61 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     		ImGui_ImplWin32_NewFrame();
 			ImGui_ImplDX9_NewFrame();
     		ImGui::NewFrame();
+    		static bool windowVisible = false;
     		ImGui::Begin("imgui test");
-    		if (ImGui::CollapsingHeader("Header1")) {
-    			ImGui::TextUnformatted("Header1 content");
+    		if (ImGui::CollapsingHeader("Framedata")) {
     		}
-    		if (ImGui::CollapsingHeader("Header2")) {
-	    		const int boxesCount = 30;
-	    		static bool boxChecked[boxesCount] = { false };
-	    		for (int i = 0; i < boxesCount; ++i) {
-	    			char buf[25];
-	    			sprintf_s(buf, "box (stuff) %d", i);
-		    		ImGui::Checkbox(buf, boxChecked + i);
-		    		if (i == 6) {
-		    			ImGui::SameLine();
-		    			ImGui::Button("F");
-		    		}
-		    		ImGui::SameLine();
-		    		HelpMarker("This is a tooltip");
-	    		}
+    		bool stateChanged = false;
+    		if (ImGui::CollapsingHeader("Hitboxes")) {
+    			static bool gifModeOn = false;
+				stateChanged = stateChanged || ImGui::Checkbox("GIF Mode", &gifModeOn);
+				static bool gifModeToggleBackgroundOnly = false;
+				stateChanged = stateChanged || ImGui::Checkbox("GIF Mode (Black Background Only)", &gifModeToggleBackgroundOnly);
+				static bool gifModeToggleCameraCenterOnly = false;
+				stateChanged = stateChanged || ImGui::Checkbox("GIF Mode (Camera Center Only)", &gifModeToggleCameraCenterOnly);
+				static bool gifModeToggleHideOpponentOnly = false;
+				stateChanged = stateChanged || ImGui::Checkbox("GIF Mode (Hide Opponent Only)", &gifModeToggleHideOpponentOnly);
+				static bool gifModeToggleHudOnly = false;
+				stateChanged = stateChanged || ImGui::Checkbox("GIF Mode (Hide HUD Only)", &gifModeToggleHudOnly);
+				static bool noGravityOn = false;
+				stateChanged = stateChanged || ImGui::Checkbox("No Gravity", &noGravityOn);
+				static bool freezeGame = false;
+				stateChanged = stateChanged || ImGui::Checkbox("Freeze Game", &freezeGame);
+				/*ImGui::SameLine();
+				static bool allowNextFrame = false;
+				static int allowNextFrameTimer = 0;
+				if (ImGui::Button("Next Frame")) {
+					allowNextFrame = true;
+					allowNextFrameTimer = 10;
+				}*/
+				static bool slowmoGame = false;
+				stateChanged = stateChanged || ImGui::Checkbox("Slow-Mo Mode", &slowmoGame);
+				/*ImGui::SameLine();
+				static int slowmoTimesSetting = 3;
+				int slowmoTimes = slowmoTimesSetting;
+				ImGui::SetNextItemWidth(80.F);
+				if (ImGui::InputInt("Slow-Mo Factor", &slowmoTimes, 1, 1, 0)) {
+					if (slowmoTimes <= 0) {
+						slowmoTimes = 1;
+					}
+					slowmoTimesSetting = slowmoTimes;
+				}*/
+				static bool takeScreenshotPress = false;
+				static int takeScreenshotTimer = 0;
+				static bool imguiActiveTemp = false;
+				//imguiActiveTemp = imguiActiveTemp || ImGui::IsItemActive();
+				//ImGui::Button("Take Screenshot");
+				/*if (ImGui::IsItemActivated()) {
+					// Regular ImGui button 'press' (ImGui::Button(...) function returning true) happens when you RELEASE the button,
+					// but to simulate the old keyboard behavior we need this to happen when you PRESS the button
+					takeScreenshotPress = true;
+					takeScreenshotTimer = 10;
+				}*/
+				//bool takeScreenshotTemp = ImGui::IsItemActive();
+				static bool continuousScreenshotToggle = false;
+				stateChanged = stateChanged || ImGui::Checkbox("Continuous Screenshotting Mode", &continuousScreenshotToggle);
+			}
+    		if (ImGui::CollapsingHeader("Settings")) {
     		}
             ImGui::End();
             ImGui::Render();
